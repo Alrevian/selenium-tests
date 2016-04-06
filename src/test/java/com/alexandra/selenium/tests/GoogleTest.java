@@ -6,13 +6,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by alrevian on 4/2/16.
  */
 public class GoogleTest {
 
     @Test
-    public void googleTest(){
+    public void googleTest() {
 
         // create browser instance
         WebDriver driver = new FirefoxDriver();
@@ -37,15 +39,41 @@ public class GoogleTest {
     }
 
     @Test
-    public void gmailTest(){
+    public void gmailTest() throws InterruptedException {
+
+        WebDriver driver = new FirefoxDriver();
         // https://mail.google.com
+        driver.get("https://mail.google.com");
         // id="Email"
+        WebElement inputField = driver.findElement(By.id("Email"));
         // fill your email
+        inputField.sendKeys("alexrouxroux");
         // press id="next"
+        WebElement nextButton = driver.findElement(By.id("next"));
+        nextButton.click();
         // id="Passwd"
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        WebElement inputPasswordField = driver.findElement(By.id("Passwd"));
         // fill your pass
+        inputPasswordField.sendKeys("qaz12wsx");
         // id="signIn"
+        WebElement signInButton = driver.findElement(By.id("signIn"));
+        signInButton.click();
+
     }
 
 
+    @Test
+    public void tunaLoginTest() throws InterruptedException {
+        WebDriver driver = new FirefoxDriver();
+        driver.get("http://radiotuna.com/");
+        WebElement tunaLogin = driver.findElement(By.id("loginButton"));
+        tunaLogin.click();
+        WebElement tunaName = driver.findElement(By.id("UserName"));
+        tunaName.sendKeys("Alrevian");
+        WebElement tunaPass = driver.findElement(By.id("Password"));
+        tunaPass.sendKeys("qaz12wsx");
+        WebElement tunaLoginButton = driver.findElement(By.xpath(".//*[@id='loginForm']/form/fieldset/input"));
+        tunaLoginButton.click();
+    }
 }

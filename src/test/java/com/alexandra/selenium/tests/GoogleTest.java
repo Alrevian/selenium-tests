@@ -1,5 +1,8 @@
 package com.alexandra.selenium.tests;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -13,11 +16,14 @@ import java.util.concurrent.TimeUnit;
  */
 public class GoogleTest {
 
+    private WebDriver driver;
+    @Before
+    public void before(){
+        driver = new FirefoxDriver();
+    }
+
     @Test
     public void googleTest() {
-
-        // create browser instance
-        WebDriver driver = new FirefoxDriver();
         // open url
         driver.get("http://www.google.com");
         // find element on page by id/name/xpath
@@ -41,8 +47,6 @@ public class GoogleTest {
     @Test
     public void gmailTest() throws InterruptedException {
 
-        WebDriver driver = new FirefoxDriver();
-        // https://mail.google.com
         driver.get("https://mail.google.com");
         // id="Email"
         WebElement inputField = driver.findElement(By.id("Email"));
@@ -65,7 +69,6 @@ public class GoogleTest {
 
     @Test
     public void tunaLoginTest() throws InterruptedException {
-        WebDriver driver = new FirefoxDriver();
         driver.get("http://radiotuna.com/");
         WebElement tunaLogin = driver.findElement(By.id("loginButton"));
         tunaLogin.click();
@@ -75,5 +78,28 @@ public class GoogleTest {
         tunaPass.sendKeys("qaz12wsx");
         WebElement tunaLoginButton = driver.findElement(By.xpath(".//*[@id='loginForm']/form/fieldset/input"));
         tunaLoginButton.click();
+
+
+        WebElement genresTab = driver.findElement(By.id("styleTreeTab"));
+        // element present
+        Assert.assertNotNull("Genres tab not present", genresTab);
+        Assert.assertTrue("Genres tab is not visible", genresTab.isDisplayed());
+
+
+        // text on page/element present
+        Assert.assertEquals("Top page message not equals expected",
+                "Our new mobile and tablet-friendly site is now available - try it out here",
+                driver.findElement(By.id("mobileSiteMessage")).getText());
+
+        // page title
+        Assert.assertEquals("Page title is as expected",
+                "Online Radio Stations, Internet Radio, Free Music | Radio Tuna",
+                driver.getTitle());
+
+    }
+
+    @After
+    public void after(){
+        driver.quit();
     }
 }
